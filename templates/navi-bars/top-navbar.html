@@ -1,0 +1,40 @@
+  <!-- **********************************************************************************************************************************************************
+  TOP BAR CONTENT & NOTIFICATIONS
+  *********************************************************************************************************************************************************** -->
+  <!--header start-->
+  {% load humanize %}
+  <header class="header black-bg">
+        <!--logo start-->
+        <a href="/" class="logo"><b>OKOTA</b></a>
+        <!--logo end-->
+        <a class="logo" href="{% url 'check-out' %}" style="margin-left: 10%">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="badge bg-theme04" style="color: #ffffff !important;">{{ shopping_cart.products.all|length}}</span>
+        </a>
+    </header>
+  <!--header end-->
+
+  <!-- **********************************************************************************************************************************************************
+  MAIN SIDEBAR MENU
+  *********************************************************************************************************************************************************** -->
+  <!--sidebar start-->
+  <aside>
+      <div id="sidebar"  class="nav-collapse hidden ">
+          <!-- sidebar menu start-->
+          <ul class="sidebar-menu" id="nav-accordion">
+              <li class="sub-menu">
+                  <a  href="javascript:;">
+                      <i class="fa fa-question-circle"></i>
+                      <span>Help</span>
+                  </a>
+                    <ul class="sub" style="display: block;">
+                      <li><a href="/faq/">Frequently Asked Questions</a></li>
+                      <li><a href="/contact/">Contact</a></li>
+                      <li><a href="/legals/">Legals</a></li>
+                    </ul>
+              </li>
+          </ul>
+          <!-- sidebar menu end-->
+      </div>
+  </aside>
+  <!--sidebar end-->

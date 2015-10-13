@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load app_filters %}
+{% block content %}
+    <link href="/static/rateit/rateit.css" rel="stylesheet" type="text/css">
+    <script src="/static/rateit/jquery.rateit.js" type="text/javascript"></script>
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+                <div class="col-md-12 main-chart">
+                    <div class="alert alert-dismissable alert-info {% if not message %}hidden {% endif %}">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                       {{ message }}
+                    </div>
+
+                <div class="col-md-8 ">
+
+                            <!-- WHITE PANEL - FEATURED -->
+                            <div class="white-panel showback">
+                                <div class="ds">
+                                    <h3 >FIND AND ORDER KOTAS</h3>
+                                    <br/>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 ">
+                                        <form action="/" method="get">
+                                        <div class=" input-group input-group-sm">
+                                              <select class="form-control"  name="category" placeholder="Find by City/Suburb">
+                                                  {% for area in area_select_options %}
+                                                    <option value="{{ area.suburb }}">{{ area.province }} - {{ area.city }} - {{ area.suburb }}</option>
+                                                  {% endfor %}
+                                              </select>
+                                            <span class="input-group-btn">
+                                              <button role="button"  class="btn btn-default btn-sm li_search" type="submit"> Find</button>
+                                            </span>
+                                          </div>
+                                        </form>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if search_term %}
+                            <div class="row">
+                            <br/>
+                                <h5 style="text-align: center">{{results_products|length|apnumber|capfirst  }} {% if results_products|length > 1  %}offers{% else %}offer{% endif %} In {{ search_term }}, {{ filter_by|lower }} delivery</h5>
+                                <div class="h5" style="text-align: center">
+                                    {% if filter_by == 'Quick' %}
+                                    Filter by:
+                                    <a href="/?category={{ search_term }}&filter_by=Courier"> Courier Delivery</a></h5> <br/>
+                                    {% else %}
+                                    <a href="/?category={{ search_term }}&filter_by=Quick"> Quick Delivery</a></h5> <br/>
+                                    {% endif %}
+                                </div>
+                                <br/>
+                                {% for product in results_products %}
+                                <div class="col-sm-6 " style="padding-bottom: 25px !important;" >
+                                        <div class="content-panel" >
+                                            <div id="blog-bg" style="background-image: url(/media/{{ product.picture }}) !important;">
+
+                                                <div class="badge badge-hot"> R {{ product.price }}</div>
+                                            </div>
+                                            <div class="profile-01 centered">
+                                               <a href="#Add-product-to-cart-Modal-{{ product.id }}" data-controls-modal="Add-product-to-cart-Modal-{{ product.id }}" data-backdrop="static" data-keyboard="false" role="button" data-toggle="modal" ><p >ADD TO SHOPPING CART</p></a>
+                                                {% include 'add-product-to-cart-modal.html' %}
+                                            </div>
+                                            <div class="blog-text">
+                                                <div class="col-xs-12" style="padding-top: 0;padding-left:10px; margin-bottom: 5px">
+                                                    <div class="rateit" data-rateit-value="{{ product.id |get_product_rating|floatformat:1 }}" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
+                                                    <strong class="pull-right" style="font-size: 16px">{{ product.store.name }}</strong> <strong>{{ product.id |get_product_rating|floatformat:1 }}</strong>
+                                                    <br/>
+                                                    <small>Based on {{ product.reviews.all|length }} {% if product.reviews.all|length == 1 %}rating{% else %}ratings{% endif %}</small>
+
+                                                </div>
+                                                <div class="col-xs-12" style="padding-left:10px;;padding-top: 5px">
+                                                    <ol style="padding-left:15px">{% for ingredient in product.ingredients.all %}<li>{{ ingredient}}.</li>  {% endfor %}</ol>
+
+                                                </div>
+
+                                            </div>
+                                            <div class="pr2-social centered">
+                                                <a class="popup" href="http://twitter.com/share?url=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/&via=za_okota&related=bunnyChow%2CKota&hashtags=BunnyChow%2CDelivery&text=Place%20Your%20Order">
+                                                    <i class="fa fa-twitter"></i></a>
+                                                <a class="popup" href="https://www.facebook.com/sharer/sharer.php?u=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                                                    <i class="fa fa-facebook"></i>
+                                                </a>
+                                                <a class="popup" href="https://plus.google.com/share?url=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                                                    <i class="fa fa-google-plus"></i>
+                                                </a>
+                                                <a href="mailto:?Subject=Bunny%20Chow%20Delivery&amp;body=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                                                    <i class="fa fa-envelope"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                {% comment %}
+                            <div class="row">
+                            <br/><br/>
+                                <h4 style="text-align: center">Featured Kotas</h4>
+                            <br/>
+
+                                {% for product in featured_products %}
+                                <div class="col-sm-6 " style="padding-bottom: 25px !important;">
+                                        <div class="content-panel">
+                                            <div id="blog-bg" style="background-image: url(/media/{{ product.picture }}) !important;">
+
+                                                <div class="badge badge-hot"> R {{ product.price }}</div>
+                                            </div>
+                                            <div class="profile-01 centered">
+                                               <a href="#Add-product-to-cart-Modal-{{ product.id }}" data-controls-modal="Add-product-to-cart-Modal-{{ product.id }}" data-backdrop="static" data-keyboard="false" role="button" data-toggle="modal" ><p >ADD TO SHOPPING CART</p></a>
+                                                {% include 'add-product-to-cart-modal.html' %}
+                                            </div>
+                                            <div class="blog-text">
+                                                <div class="col-xs-12" style="padding-top: 0">
+                                                    <strong class=" pull-left">{{ product.store.name }}</strong>
+                                                    <strong class="pull-right"><a href="/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">Reviews</a></strong>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <p>{{ product.short_description }}</p>
+                                                </div>
+
+                                            </div>
+                                            <div class="pr2-social centered">
+                                                <a class="popup" href="http://twitter.com/share?url=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/&via=za_okota&related=bunnyChow%2CKota&hashtags=BunnyChow%2CDelivery&text=Place%20Your%20Order">
+                                                    <i class="fa fa-twitter"></i></a>
+                                                <a class="popup" href="https://www.facebook.com/sharer/sharer.php?u=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                                                    <i class="fa fa-facebook"></i>
+                                                </a>
+                                                <a class="popup" href="https://plus.google.com/share?url=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                                                    <i class="fa fa-google-plus"></i>
+                                                </a>
+                                                <a href="mailto:?Subject=Bunny%20Chow%20Delivery&amp;body=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                                                    <i class="fa fa-envelope"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                            {% endcomment %}
+
+                </div>
+                <br/>
+                <div class="col-md-3 col-md-offset-1 ds">
+                {%  if landing_page_ad %}
+                    <a href="{{ landing_page_ad.url }}">
+                        <img title="{{ landing_page_ad.title }}"  width="100%"  src="/media/{{ landing_page_ad.picture }}" />
+                    </a>
+                {% endif %}
+
+
+                    <h3>Contact us</h3>
+                    <div class="desc">
+                        <div class="details">
+                            <i class="fa fa-phone"></i> <a href="tel:0630826867">063-082-6867</a>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="details">
+                             <i class="fa fa-envelope-o"></i> <a href="mailto:support@okota.co.za">support@okota.co.za</a>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="details">
+                            <i class="fa fa-facebook-square"></i> <a href="http://facebook.com/pages/okota/715094811899745/">okota</a>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="details">
+                            <i class="fa fa-pencil"></i>
+                            <a href="/blog/" >Blog</a>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="details">
+                            <i class="fa fa-twitter "></i>
+                            <a>@Za_Okota Mentions</a>
+                            {% for testimonial in testimonials %}
+                            <p style="margin-top: 5px">
+                                <i>"{{ testimonial.review }}"</i><br/>
+                                <strong>{{ testimonial.reviewers_name}}</strong>
+                            <hr/>
+                            </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!--<div class="desc">
+                        <div class="details">
+<a class="twitter-timeline" href="https://twitter.com/ZA_Okota" data-widget-id="523092490165829632" data-chrome="noborders nofooter" width="500">Tweets by @ZA_Okota</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                        </div>
+                    </div> -->
+                </div>
+
+
+            </div>
+        </section>
+    </section>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+    {% include 'top-navbar.html' %}
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row">
+                <div class="showback">
+                    <p>Step 3 of 3. Tells us where to deliver your order and more. Click <strong>PLACE ORDER</strong> to submit your order. </p>
+                </div>
+                <div class="col-lg-9 main-chart">
+
+                <div class="alert alert-dismissable alert-success {% if not message %}hidden {% endif %}">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  {{ product.name }} {{ message }}
+                </div>
+
+                {% if cart_count != 0  %}
+                    <div class="form-panel">
+                        <h4>
+                            <i class="fa fa-angle-right"></i> Summary
+                        </h4>
+                        <table class="table table-bordered table-striped table-condensed">
+                            <tbody>
+                            {% for item in shoppingcart.products.all%}
+                                <tr>
+                                    <td>
+                                        <strong class="h4">{{ item.product.name }} x {{ item.quantity }}</strong>
+                                        <br/>
+                                        {{ item.product.short_description|truncatechars:'60' }}
+                                    </td>
+                                    <td class="centered">
+                                        <strong class="h4">
+                                            {{ item.product.price|floatformat:2 }}
+                                        </strong>
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                                <tr class="active ">
+                                    <td>
+                                        <strong class="h4">Delivery fee </strong>
+                                    <br/>
+
+                                         {% for store in delivery_fees %}
+                                            {{ store.name }} @ R {{ store.delivery_fee }} <br/>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="centered"><p class="h4"> {{ shoppingcart.delivery_fee|floatformat:2 }}</p></td>
+                                </tr>
+                            {% if shoppingcart.voucher %}
+                                <tr class="warning">
+                                    <td><strong class="h4">Discount</strong> <br/>{{ shoppingcart.voucher.code }}</td>
+                                    <td class="centered"><p class="h4"> {{ shoppingcart.voucher.amount|floatformat:2 }}</p></td>
+                                </tr>
+                            {% endif %}
+                                <tr class="h3">
+                                    <td><strong >Total <strong class="pull-right">R</strong></strong></td>
+                                    <td class="centered"><strong > {{ cart_cost|floatformat:2 }}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    <br/>
+                        <form role="form"  method="get" action="/redeem-voucher/">
+                            {% csrf_token %}
+                                  <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" name="voucher-code" id="voucher-code" >
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-primary btn-sm" type="submit">Redeem voucher</button>
+                                    </span>
+                                  </div>
+                            <i class="help-block">Do you have a discount code? Enter your code (case sensitive) here else leave blank.</i>
+                        </form>
+                    </div>
+                    <div class="form-panel">
+                                            <form role="form"  method="post" action="/check-out/">
+                        <h4>
+                            <i class="fa fa-angle-right"></i> Delivery Address
+                        </h4>
+                        <div class=" input-group input-group-sm">
+                              <select class="form-control" id="delivery_id" name="delivery_id">
+                                {% with i=0 %}
+
+                                    {% for address in addresses %}
+                                    <option value="{{ address.id }}" {% ifequal  i 0 %} selected=""{% endifequal %}>{{ address }}</option>
+                                          {{ i|add:"1" }}
+                                    {% endfor %}
+                                {% endwith %}
+                              </select>
+                            </span>
+                            <span class="input-group-btn">
+                              <a  href="#locationModal" role="button" data-toggle="modal" class="btn btn-primary btn-sm" type="button">Add new address</a>
+                            </span>
+                          </div>
+                          <i class="help-block">Please select- or add, an address where we should deliver you order to. </i>
+                    </div>
+                    <div class="form-panel">
+                        <h4><i class="fa fa-angle-right"></i> Payment</h4>
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                      <label class="col-lg-2 control-label">How would you like to pay for your order?</label>
+                      <div class="col-lg-10">
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="paymentOption" value="cash_on_delivery" checked="">
+                            <strong>Cash on delivery</strong>
+                              <i class="help-block">Pay cash when your order arrives. </i>
+                          </label>
+
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="paymentOption"  value="pay_later" disabled>
+                           <strong> Pay later</strong>
+                            <i class="help-block">Buy on credit and pay instalments later. </i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                        <button type="submit" method="post" action="/check-out/" class="btn btn-success btn-sm"> Place order</button>
+                </form>
+
+                {% else %}
+                    <div class="alert alert-dismissable alert-warning ">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                      You have no items to checkout from your shopping cart.
+                    </div>
+                {% endif %}
+                {% include 'add-location-modal.html' %}
+
+
+               </div>
+            </div>
+        </section>
+    </section>
+
+{%  endblock %}

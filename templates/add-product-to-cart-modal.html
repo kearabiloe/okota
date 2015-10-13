@@ -1,0 +1,26 @@
+<div id="Add-product-to-cart-Modal-{{ product.id }}" class="modal fade in">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="add-location-form"  name="add-location-form" class="form-horizontal" role="form"  method="post" action="/add-product-to-cart/">
+                        <h4> Check ingredients or toppings you want.</h4>
+                        {% csrf_token %}
+                        <br/>
+                        <input type="hidden" name="product" value="{{ product.id }}"/>
+                        <input type="hidden" name="search_term" value="{{ search_term}}"/>
+                        {% for ingredient in product.ingredients.all %}
+                            <label class="checkbox-inline h4">
+                              <input type="checkbox"  name="ingredients" value="{{ ingredient.id }}" checked> {{ ingredient.key }}
+                            </label>
+                        {% endfor %}
+                        <input type="hidden" name="next"  />
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                <button type="submit"  class="btn btn-success ">Save & Checkout</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

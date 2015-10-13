@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+            <div class="row">
+
+
+                {% include 'navi-bars/store-admin-navi.html' %}
+
+                <div class="col-lg-12">
+          			<div class="form-panel">
+
+                      <form class="form-inline" role="form" method="get" action="/search-user/">
+                          <div class="form-group">
+                              <label class="sr-only" for="username">Cellphone Number</label>
+                              <input type="text" class="form-control" name="username" placeholder="Cellphone / Username">
+                          </div>
+                          <button type="submit" class="btn btn-theme03">Find User</button>
+                      </form>
+          			</div><!-- /form-panel -->
+          		</div>
+                <div class="col-lg-12">
+                    <div class="form-panel">
+                        <h4 class="mb"><i class="fa fa-angle-right"></i> New order</h4>
+                        <form class="form-horizontal style-form" method="post">
+                        {% csrf_token %}
+                        {% ifnotequal user_profile None %}
+                            <input type="hidden" name="new_user" value="False">
+
+                            <div class="form-group">
+                              <label class="col-lg-2 col-sm-2 control-label">Username</label>
+                              <div class="col-sm-10">
+                                  <input type="text" name="username" class="form-control" value="{{ user_profile.user.username }}" disabled>
+                              </div>
+                             </div>
+                            {% else %}
+                            <input type="hidden" name="new_user" value="True">
+                            <div class="form-group">
+                              <label class="col-lg-2 col-sm-2 control-label">Username</label>
+                              <div class="col-sm-10">
+                                  <input type="text" name="username" class="form-control" value="{{ search_username }}">
+                              </div>
+                             </div>
+                        {% endifnotequal %}
+
+                            <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">First Name</label>
+                              <div class="col-sm-10">
+                                  <input type="text" name="first_name" class="form-control" value="{{ user_profile.user.first_name }}">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Last Name</label>
+                              <div class="col-sm-10">
+                                  <input type="text" name="last_name" class="form-control" value="{{ user_profile.user.last_name }}">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Cellphone</label>
+                              <div class="col-sm-10">
+                                  <input type="text" name="cellnumber" class="form-control" value="{{ user_profile.cell }}">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-2 col-sm-2 control-label">Address</label>
+                              <div class="col-sm-10">
+                                  <select type="text" class="form-control" name="address" id="SelectAddress">
+                                {% with i=0 %}
+
+                                    {% for address in user_profile.address.all %}
+                                    <option value="{{ address.id }}" {% ifequal  i 0 %} selected=""{% endifequal %}>{{ address }}</option>
+                                          {{ i|add:"1" }}
+                                    {% endfor %}
+                                {% endwith %}
+
+                                        <option id="new_address" value="new_address">Add New Address </option>
+                                  </select>
+                              <div id="new_address_fields" >
+                                  <br/>
+                                    <div class="form-group">
+                                      <div class="col-sm-12">
+                                        <input type="text" class="form-control input-sm" name="address_street" id="address_street" placeholder="Street address" autocomplete="on">
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                      <div class="col-sm-12">
+                                        <input type="text" class="form-control input-sm" name="address_suburb" id="address_suburb" placeholder="Suburb" autocomplete="on"/>
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                      <div class="col-sm-12">
+                                        <input type="text"  class="form-control input-sm" name="address_city" id="address_city" placeholder="city" autocomplete="on"/>
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                      <div class="col-sm-12">
+                                        <select class="form-control input-sm" name="address_province" id="address_province" placeholder="Province" autocomplete="on">
+                                            <option selected="selected" >Limpopo</option>
+                                            <option>Mpumalanga</option>
+                                            <option>Gauteng</option>
+                                            <option>North West</option>
+                                            <option>Free State</option>
+                                            <option>Eastern Cape</option>
+                                            <option>Western Cape</option>
+                                            <option>Northern Cape</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                      <div class="col-sm-12">
+                                        <input type="number" class="form-control input-sm" name="address_postal" id="address_postal" placeholder="Postal code" value="0742" autocomplete="on" >
+                                      </div>
+                                    </div>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-lg-2 col-sm-2 control-label">Products</label>
+                              <div class="col-sm-10">
+
+                                <div class="col-sm-9">
+                                  <select name="selected_product" type="text" class="form-control">
+                                  <option value="None" selected="selected">Please select</option>
+                                    {% for product in products %}
+                                    <option value="{{ product.id }}">{{ product.name }}</option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                                <div class="col-sm-3">
+                                   <input type="number" name="selected_quantity" class="form-control" min="0" placeholder="Quantity">
+                                </div>
+                                  <br/><br/>
+
+                              </div>
+                             </div>
+                            <div class="form-group">
+                              <div class="col-sm-10 col-sm-offset-2">
+                                  <button type="submit" class="btn btn-success btn-lg">Create Order</button>
+                              </div>
+                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+<script type="text/javascript">
+$(function() {
+
+    $('#SelectAddress').bind('change', function (event) {
+
+        var i = $('#SelectAddress').val();
+        console.log(i);
+
+        if (i == "new_address") {
+            $('#new_address_fields').show();
+        }
+        else{
+            $('#new_address_fields').hide()
+        }
+    });
+
+    if ('None' == '{{ user_profile }}') {
+        $('#SelectAddress').hide();
+        $('#new_address_fields').show();
+    }
+    else{
+        $('#new_address_fields').hide();
+    }
+
+})
+</script>
+{% endblock %}

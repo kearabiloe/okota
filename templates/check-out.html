@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+            <div class="row">
+                <div class="showback">
+                    <p>Step 3 of 3. Tells us where to deliver your order and more. Click <strong>PLACE ORDER</strong> to submit your order. </p>
+                </div>
+                <div class="col-lg-9 main-chart">
+
+                <div class="alert alert-dismissable alert-success {% if not message %}hidden {% endif %}">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  {{ product.name }} {{ message }}
+                </div>
+
+                <a href="{{ previous }}" class="btn btn-link"><i class="fa fa-angle-left"></i> Back to search results</a>
+
+                {% if cart_count != 0  %}
+                    <div class="col-xs-12 showback">
+                        <h4>
+                            <i class="fa fa-angle-right"></i> Summary
+                        </h4>
+                        <table class="table table-bordered table-striped table-condensed">
+                            <tbody>
+                            {% for item in shopping_cart.products.all%}
+                                <tr>
+                                    <td>
+                                        <strong >{{ item.product.name }} | {% for ingredient in item.attributes.all %}{{ ingredient}}, {% endfor %}</strong>
+                                    <a class="btn btn-link btn-sm pull-right" href="/check-out/?remove={{ item.id }}">Remove</a>
+                                    </td>
+                                    <td class="centered">
+                                        <strong >
+                                            {{ item.product.price|floatformat:2 }}
+                                        </strong>
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                                <tr class="active ">
+                                    <td>
+                                        <strong >Delivery fee </strong>
+                                        <br/>
+                                        <strong class="text-warning">Estimated Time of Arrival: {{ eta|apnumber|capfirst }} {% if eta > 1 %}Hours {% else %} Hour{% endif %}</strong>
+                                    </td>
+                                    <td class="centered"><strong> {{ delivery_fee|floatformat:2 }}</strong></td>
+                                </tr>
+                            {% if shopping_cart.voucher %}
+                                <tr class="warning">
+                                    <td><strong class="h4">Discount</strong> <br/>{{ shopping_cart.voucher.code }}</td>
+                                    <td class="centered"><p class="h4"> {{ shopping_cart.voucher.amount|floatformat:2 }}</p></td>
+                                </tr>
+                            {% endif %}
+                                <tr class="h3">
+                                    <td><strong >Total</strong></td>
+                                    <td class="centered"><strong >R{{ cart_cost|floatformat:2 }}</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    <br/>
+                    {% comment %}
+                        <form role="form"  method="get" action="/redeem-voucher/">
+                            {% csrf_token %}
+                                  <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" name="voucher-code" id="voucher-code" >
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-primary btn-sm" type="submit">Redeem voucher</button>
+                                    </span>
+                                  </div>
+                            <i class="help-block">Do you have a discount code? Enter your code (case sensitive) and click <strong>redeem voucher</strong>.</i>
+                        </form>
+                    {% endcomment %}
+                    </div>
+                    <div class="col-xs-12  showback">
+                        <form role="form"  method="get" action="/check-out/">
+                        <h4>
+                            <i class="fa fa-angle-right"></i> Delivery
+                        </h4>
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <div class="col-xs-4">
+                                  <label>Delivery Time</label>
+                              </div>
+                              <div class="col-xs-8">
+                                <select required class="form-control " name="delivery_timeslot" id="delivery_timeslot" autocomplete="on">
+                                    <option value="" >Please select a delivery time slot</option>
+                                    {% for slot in delivery_time_slots %}
+                                        <option value="{{ slot.id }}"  >{{ slot.start_time|time:'H:i' }} - {{ slot.end_time|time:'H:i' }}</option>
+                                    {% endfor %}
+                                </select>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <div class="col-xs-4">
+                                  <label>Full Names</label>
+                              </div>
+                              <div class="col-xs-8">
+                                <input required="" type="text" class="form-control " name="contact_name" placeholder="Full names" autocomplete="on">
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <div class="col-xs-4">
+                                  <label>Cellphone number</label>
+                              </div>
+                              <div class="col-xs-8">
+                                <input required="" type="text" class="form-control " name="contact_number" placeholder="Cellphone number" autocomplete="on">
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <div class="col-xs-4">
+                                  <label>Street Address</label>
+                              </div>
+                              <div class="col-xs-8">
+                                <input required="" type="text" class="form-control " name="address_street" id="address_street" placeholder="Street address" autocomplete="on">
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <div class="col-xs-4">
+                                  <label>Suburb</label>
+                              </div>
+                              <div class="col-xs-8">
+                                <input required="" type="text" class="form-control " name="address_suburb" id="address_suburb" placeholder="Suburb" autocomplete="on"/>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <div class="col-xs-4">
+                                  <label>City</label>
+                              </div>
+                              <div class="col-xs-8">
+                                <input required="" type="text"  class="form-control " name="address_city" id="address_city" placeholder="city" autocomplete="on"/>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <div class="col-xs-4">
+                                  <label>Province</label>
+                              </div>
+                              <div class="col-xs-8">
+                                <select class="form-control " name="address_province" id="address_province" placeholder="Province" autocomplete="on">
+                                    <option selected="selected" >Limpopo</option>
+                                    <option>Mpumalanga</option>
+                                    <option>Gauteng</option>
+                                    <option>North West</option>
+                                    <option>Free State</option>
+                                    <option>Eastern Cape</option>
+                                    <option>Western Cape</option>
+                                    <option>Northern Cape</option>
+                                </select>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <div class="col-xs-4">
+                                  <label>Postal Code</label>
+                              </div>
+                              <div class="col-xs-8">
+                                <input required="" type="text" class="form-control " name="address_postal" id="address_postal" placeholder="Postal code" value="0742" autocomplete="on" >
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-xs-12 showback">
+                        <h4><i class="fa fa-angle-right"></i> Payment</h4>
+                        {% csrf_token %}
+
+                        <div class="form-group">
+
+                      <div class="col-lg-10">
+                        {% if not delivery_fee >= 90 %}
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="payment_method" value="Cash on delivery" checked="">
+                            <strong>Cash on delivery</strong>
+                              <i class="help-block">Pay cash when your order arrives. </i>
+                          </label>
+                        {% endif %}
+
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="payment_method"  value="ocredit">
+                           <strong>OCredit Pay later</strong>
+                            <i class="help-block">Apply for credit and pay later. <a>Read more</a>.  </i>
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="payment_method"  value="payfast">
+                           <strong> Pay Now</strong>
+                            <i class="help-block">Pay using EFT, Bitcoin or Credit/Debit card via PayFast. </i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                        <input name="submit-order" value="submit-order" type="hidden"/>
+                        <button type="submit"   class="btn btn-success btn-sm"> Place order</button>
+                </form>
+
+                {% else %}
+                    <div class="alert alert-dismissable alert-warning ">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                      You have no items to checkout from your shopping cart.
+                    </div>
+                {% endif %}
+
+               </div>
+            </div>
+        </section>
+    </section>
+
+{%  endblock %}

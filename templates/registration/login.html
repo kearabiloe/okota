@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block content %}
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+            <div class="row">
+                <div class="showback">
+                    <p>Please log in to continue. Don't have an account? register bellow!</p>
+                </div>
+                <div class="col-lg-9 main-chart">
+                    <div class="alert alert-dismissable {% if error_message %} alert-danger {% else %} alert-success {% endif %} {% if not message %}hidden {% endif %}">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                      {{ message }}
+                    </div>
+                    <div class="col-sm-5">
+                    <div class="form-panel">
+
+                                        <h4 class="mb">
+                                            <i class="fa fa-angle-right"></i>
+                                            Returning user
+                                        </h4>
+                                         {% if form.errors %}
+                                                <p class="help-block">Your username and password didn't match. Please try again.</p>
+                                            {% endif %}
+                                        <form role="form"  method="post" action="{% url 'django.contrib.auth.views.login' %}">
+                                            {% csrf_token %}
+                                          <div class="form-group">
+                                            <label for="username" class="control-label">Cell number</label>
+                                            <input type="text" class="form-control input-sm" name="username" placeholder="Cell number">
+                                          </div>
+                                          <div class="form-group">
+                                            <label for="password" class="control-label">Password</label>
+                                            <input type="password" class="form-control input-sm" name="password" placeholder="password">
+                                          </div>
+                                               <input class="btn btn-primary btn-sm" style="width: 100%" type="submit" value="login" />
+                                               <input type="hidden" name="next" value="{{ next }}" />
+                                        </form>
+                    </div>
+                    </div>
+
+                    <div class="col-sm-7">
+                    <div class="form-panel">
+                        <h4 class="mb">
+                            <i class="fa fa-angle-right"></i>
+                            New registration
+                        </h4>
+                        <form class="form-horizontal " role="form"  method="post" action="/register/">
+                            {% csrf_token %}
+                            <div class="form-group ">
+                              <label for="cell" class="col-sm-4 control-label">Cell number</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control input-sm" name="cell" id="cell" placeholder="081234567" autocomplete="on">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="password" class="col-sm-4 control-label">Password</label>
+                              <div class="col-sm-8">
+                                <input type="password" class="form-control input-sm" name="password" id="password" placeholder="Password" >
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="verify_password" class="col-sm-4 control-label">Verify password</label>
+                              <div class="col-sm-8">
+                                <input type="password" class="form-control input-sm" name="verify_password" id="verify_password" placeholder="Password" >
+                              </div>
+                            </div>
+                            <hr class="col-sm-7 col-sm-offset-4"/>
+                            <div class="form-group">
+                              <label for="first_name" class="col-sm-4 control-label">First name</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control input-sm" name="first_name" id="first_name" placeholder="First name" autocomplete="on">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="last_name" class="col-sm-4 control-label">Last name</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control input-sm" name="last_name" id="last_name" placeholder="Last name" autocomplete="on">
+                              </div>
+                            </div>
+                            <!--<hr class="col-sm-7 col-sm-offset-4"/>
+                            <div class="form-group">
+                              <label for="address_street" class="col-sm-4 control-label">Street address</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control input-sm" name="address_street" id="address_street" placeholder="Street address" autocomplete="on">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="address_suburb" class="col-sm-4 control-label">Suburb</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control input-sm" name="address_suburb" id="address_suburb" placeholder="Suburb" autocomplete="on"/>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="address_city" class="col-sm-4 control-label">City</label>
+                              <div class="col-sm-8">
+                                <input  class="form-control input-sm" name="address_city" id="address_city" placeholder="city" autocomplete="on"/>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="address_province" class="col-sm-4 control-label">Province</label>
+                              <div class="col-sm-8">
+                                <select class="form-control input-sm" name="address_province" id="address_province" placeholder="Province" autocomplete="on">
+                                    <option selected="selected" >Limpopo</option>
+                                    <option>Mpumalanga</option>
+                                    <option>Gauteng</option>
+                                    <option>North West</option>
+                                    <option>Free State</option>
+                                    <option>Eastern Cape</option>
+                                    <option>Western Cape</option>
+                                    <option>Northern Cape</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="address_postal" class="col-sm-4 control-label">Postal code</label>
+                              <div class="col-sm-8">
+                                <input type="tel" class="form-control input-sm" name="address_postal" id="address_postal" placeholder="0742" value="0742" autocomplete="on" disabled>
+                              </div>
+                            </div> -->
+                            <p class="col-sm-8 col-sm-offset-4">By registering you consent that you have read and agree to our <a href="/legals/">terms of use</a>. </p>
+                            <div class="form-group">
+                              <div class="col-sm-8 col-sm-offset-4">
+                                <button style="width: 100%" type="submit" class="btn btn-sm btn-warning">Register</button>
+                              </div>
+                            </div>
+                            <input type="hidden" name="next" value="{{ next }}" />
+                        </form>
+                    </div>
+                    </div>
+
+               </div>
+            </div>
+        </section>
+    </section>
+{% include 'footer.html' %}
+{%  endblock %}
+
+
+
+

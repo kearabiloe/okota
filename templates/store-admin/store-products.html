@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+            <div class="row">
+
+                {% include 'navi-bars/store-admin-navi.html' %}
+
+                <div class="row" style=" margin:20px 0 0 0;padding: 20px 0 10px 0">
+                    <div class="col-md-12">
+                    <a href="#add-product-modal" role="button" data-toggle="modal" class="btn btn-sm btn-primary" type="button" style="margin: 0px 0px 10px 15px">Add product</a>
+                    {% for product in store.products.all%}
+                        <div class="row" style="border-bottom: 1px solid #eeeeee; margin-left: 0px; margin-right: 0px;padding: 10px 0 10px 0">
+                          <div class="col-sm-2">
+                              <img style="width: 75%;max-width: 100%" src="/media/{{ product.picture }}"><br/><br/>
+                              <a href="#upload-store-product-picture-modal-{{ product.id }}" role="button" data-toggle="modal" class="btn btn-xs btn-default" type="button">Upload picture</a>
+                          </div>
+                          <div class="col-sm-4" style="text-align: center">
+                              <strong class="black-link"><a target="_tab">{{ product.name }}</a></strong>
+                              <br/>
+                              <a target="_tab" style="color: #000000; text-decoration: underline" class="small" href="/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}">
+                                http://okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/
+                              </a>
+                              <br/><br/>
+                              <span>{{ product.short_description }}</span>
+                          </div>
+                          <div class="col-sm-4" style="text-align: center">
+                              <div class="row" style=" text-align: center">
+                                  <h4 style="margin-top: 0; text-align: center">R {{ product.price }} <br/>
+                                  </h4>
+                              </div>
+                              <div class="row" >
+                              {% if  product.is_active %}
+                                  <form action="/update-store-product-status/" method="POST" style="margin-bottom: 5px">
+                                      {% csrf_token %}
+                                  <input type="hidden" name="product-status" value="Unavailable">
+                                      <input type="hidden" name="product-id" value="{{ product.id }}"/>
+                                  <button type="submit" style="width: 50%" class="btn btn-success btn-sm">Available</button>
+                                  </form>
+                              {% else %}
+                                  <form action="/update-store-product-status/" method="POST">
+                                      {% csrf_token %}
+                                  <input type="hidden" name="product-status" value="Available">
+                                      <input type="hidden" name="product-id" value="{{ product.id }}"/>
+                                  <button type="submit" style="width: 50%" class="btn btn-default btn-sm">Unavailable</button>
+                                  </form>
+                              {% endif %}
+
+                              </div>
+                              </div>
+                          <div class="col-sm-2" style="text-align: center">
+                              <a href="#edit-product-modal-{{ product.id }}" role="button" data-toggle="modal" class="btn btn-xs btn-link" type="button">Edit product</a>
+                              <a href="#confirm-product-delete-{{ product.id }}" role="button" data-toggle="modal" class="btn btn-xs btn-link disabled" type="button">Delete product</a>
+
+                                  </form>
+                          </div>
+                        </div>
+
+                        <div id="edit-product-modal-{{ product.id }}" class="modal">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Edit {{ product.name }}</h4>
+                              </div>
+                              <div class="modal-body">
+                                <form class="form-horizontal" action="/edit-store-product/" method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                <div class="col-sm-12">
+                                      <fieldset>
+                                        <div class="form-group">
+                                          <label for="inputName" class="col-xs-4 control-label">Product Name</label>
+                                          <div class="col-xs-8">
+                                            <input type="text" class="form-control" id="inputName" placeholder="Product name" data-cip-id="inputName" autocomplete="off" value="{{ product.name}}" disabled>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="Price" class="col-xs-4 control-label">Price</label>
+                                          <div class="col-xs-8">
+                                            <input class="form-control" type="number" min="0" step="0.01" id="Price" name="Price" value="{{ product.price }}"></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="ShortDescription" class="col-xs-4 control-label">Ingredients (separated by comma</label>
+                                          <div class="col-xs-8">
+                                            <input class="form-control" type="text" id="ShortDescription" name="ShortDescription" value="{{ product.short_description }}"></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="LongDescription" class="col-xs-4 control-label">Description</label>
+                                          <div class="col-xs-8">
+                                            <textarea class="form-control" rows="5" id="LongDescription" name="LongDescription"> {{ product.long_description }}</textarea>
+                                          </div>
+                                        </div>
+                                          <input type="hidden" name="entry-action" value="Update">
+                                          <input type="hidden" name="product-id" value="{{ product.id }}">
+                                      </fieldset>
+                                </div>
+                                    </div>
+
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div id="confirm-product-delete-{{ product.id }}" class="modal">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Confirm deletion</h4>
+                              </div>
+                              <div class="modal-body">
+                                <p>Are you sure you want to delete {{ product.name }}?</p>
+                                  <form action="/update-store-product-status/" method="POST">
+                                      {% csrf_token %}
+                                  <input type="hidden" name="product-status" value="Delete">
+                                      <input type="hidden" name="product-id" value="{{ product.id }}"/>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Delete</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div id="upload-store-product-picture-modal-{{ product.id }}" class="modal">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title">Upload product picture</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        <form class="form-horizontal" action="/upload-store-product-image/" method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                        <div class="col-sm-12">
+                                              <fieldset>
+                                                <div class="form-group">
+                                                  <label for="image_file" class="col-xs-4 control-label">Picture</label>
+                                                  <div class="col-xs-8">
+                                                    <input type="file" class="form-control" id="Name" name="image_file"  data-cip-id="inputName" autocomplete="off">
+                                                  </div>
+                                                </div>
+
+                                                  <input type="hidden" name="product-id" value="{{ product.id }}">
+                                              </fieldset>
+                                        </div>
+                                            </div>
+
+
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                    {% endfor %}
+                        <div id="add-product-modal" class="modal">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Add product</h4>
+                              </div>
+                              <div class="modal-body">
+                                <form class="form-horizontal" action="/edit-store-product/" method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                <div class="col-sm-12">
+                                      <fieldset>
+                                        <div class="form-group">
+                                          <label for="inputName" class="col-xs-4 control-label">Product Name</label>
+                                          <div class="col-xs-8">
+                                            <input type="text" class="form-control" id="Name" name="Name"  data-cip-id="inputName" autocomplete="off">
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="Price" class="col-xs-4 control-label">Price</label>
+                                          <div class="col-xs-8">
+                                            <input class="form-control" type="number" min="0" step="0.01" id="Price" name="Price" ></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="ShortDescription" class="col-xs-4 control-label">Ingredients (separated by comma)</label>
+                                          <div class="col-xs-8">
+                                            <input class="form-control" type="text"  id="ShortDescription" name="ShortDescription" ></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="LongDescription" class="col-xs-4 control-label">Description</label>
+                                          <div class="col-xs-8">
+                                            <textarea class="form-control" rows="5" id="LongDescription" name="LongDescription"> </textarea>
+                                          </div>
+                                        </div>
+                                          <input type="hidden" name="entry-action" value="Add">
+                                      </fieldset>
+                                </div>
+                                    </div>
+
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}

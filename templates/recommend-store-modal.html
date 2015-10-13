@@ -1,0 +1,67 @@
+<div id="recommend-storeModal" class="modal fade in">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Recommend Nearby Store</h4>
+            </div>
+            <div class="modal-body">
+
+                    <div class="row">
+                    <form  class="form-panel form-horizontal" role="form"  method="post" action="/recommend-store/">
+                        <h4> <i class="fa fa-angle-right"></i> Please fill-in details about the store you want us to work with.</h4>
+
+                        <a class="help-block">Feel free to give us any information you know about the store.</a>
+                        {% csrf_token %}
+                        <br/>
+                        <div class="form-group">
+                            <label for="lead_store_name" class="col-sm-2 col-sm-offset-2 control-label">Store name</label>
+                          <div class="col-sm-6">
+                            <input type="text" class="form-control input-sm" name="lead_store_name" required=""/>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lead_store_address" class="col-sm-2 col-sm-offset-2 control-label">Address</label>
+                          <div class="col-sm-6">
+                            <input type="text"  class="form-control input-sm" name="lead_store_address" />
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="lead_store_province" class="col-sm-2 col-sm-offset-2 control-label">Province</label>
+                          <div class="col-sm-6">
+                            <select class="form-control input-sm" name="lead_store_province"   autocomplete="on">
+                                <option selected="selected" >Limpopo</option>
+                                <option>Mpumalanga</option>
+                                <option>Gauteng</option>
+                                <option>North West</option>
+                                <option>Free State</option>
+                                <option>Eastern Cape</option>
+                                <option>Western Cape</option>
+                                <option>Northern Cape</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lead_store_telephone" class="col-sm-2 col-sm-offset-2 control-label">Telephone </label>
+                          <div class="col-sm-6">
+                            <input type="tel" class="form-control input-sm" name="lead_store_telephone"  >
+                          </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lead_store_telephone" class="col-sm-2 col-sm-offset-2 control-label">Comment </label>
+                          <div class="col-sm-6">
+                            <textarea type="text" class="form-control input-sm" name="lead_store_comment"  ></textarea>
+                          </div>
+                        </div>
+                        <input type="hidden" name="next" value="{{ next }}" />
+
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit"  class="btn btn-primary">Complete</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+            <div class="row">
+                <div class="showback">
+                    <p>Step 1 of 3. Add items to your trolley by clicking <strong>ADD TO SHOPPING CART</strong>. </p>
+                </div>
+                <div class="col-md-9 main-chart">
+                    <div class="alert alert-dismissable alert-info {% if not message %}hidden {% endif %}">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                       {{ message }}
+                    </div>
+
+                    <div class="row">
+
+
+
+
+                    {% if stores %}
+                            {% for store in stores %}
+                                {% for product in store.products.all %}
+                                    {% if product.is_active %}
+                                        <div class="col-lg-6 col-md-6 col-sm-6 mb">
+                                            <div class="content-panel">
+                                                <div id="blog-bg" style="background-image: url(/media/{{ product.picture }}) !important;">
+
+                                                    <div class="badge badge-hot"> R {{ product.price }}</div>
+                                                </div>
+                                                <div class="profile-01 centered">
+                                                   <a {% comment %}href="/add_product_to_cart/{{ product.id }}/1/" {% endcomment %}href="#recommend-storeModal" data-controls-modal="recommend-storeModal" data-backdrop="static" data-keyboard="false" role="button" data-toggle="modal"><p >ADD TO SHOPPING CART</p></a>
+                                                </div>
+                                                <div class="blog-text">
+                                                    <div class="col-xs-12" style="padding-top: 0">
+                                                        <strong class=" pull-left">{{ product.store.name }}</strong>
+                                                        <strong class="pull-right"><a href="/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">Reviews</a></strong>
+                                                    </div>
+                                                    <div class="col-xs-12">
+                                                        <p>{{ product.short_description }}</p>
+                                                    </div>
+
+                                                </div>
+                                                <div class="pr2-social centered">
+                                                    <a class="popup" href="http://twitter.com/share?url=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/&via=za_okota&related=bunnyChow%2CKota&hashtags=BunnyChow%2CDelivery&text=Place%20Your%20Order">
+                                                        <i class="fa fa-twitter"></i></a>
+                                                    <a class="popup" href="https://www.facebook.com/sharer/sharer.php?u=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                                                        <i class="fa fa-facebook"></i>
+                                                    </a>
+                                                    <a class="popup" href="https://plus.google.com/share?url=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                                                        <i class="fa fa-google-plus"></i>
+                                                    </a>
+                                                    <a href="mailto:?Subject=Bunny%20Chow%20Delivery&amp;body=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                    {% endif %}
+                    {% if level != "product" %}
+                    <div class="col-lg-6 col-md-6 col-sm-6 mb">
+							<div class="product-panel-2 pn">
+								<img src="/static/images/Map-icon.png" style="max-width: 130px" alt="">
+								<h5 class="mt">Can't Find Your Local Store?</h5>
+								<h6>Help us bring them on-board</h6>
+								<button  href="#recommend-storeModal" data-controls-modal="recommend-storeModal" data-backdrop="static" data-keyboard="false" role="button" data-toggle="modal" class="btn btn-small btn-theme04">Recommend Store</button>
+							</div>
+						</div>
+                    </div>
+                    {% include 'recommend-store-modal.html' %}
+                {% endif %}
+        {% if level == "product" %}
+            {% include 'product.html' %}
+        {% endif %}
+                </div>
+            {% if level != "product" %}
+                <div class="col-sm-3 ds">
+                    <h3>Contact us</h3>
+                    <div class="desc">
+                        <div class="details">
+                            <i class="fa fa-phone"></i> <a href="tel:0630826867">063-082-6867</a>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="details">
+                             <i class="fa fa-envelope-o"></i> <a href="mailto:support@okota.co.za">support@okota.co.za</a>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="details">
+                            <i class="fa fa-twitter-square"></i> <a href="http://twitter.com/za_okota">@za_okota</a>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="details">
+                            <i class="fa fa-facebook-square"></i> <a href="http://facebook.com/pages/okota/715094811899745/">okota</a>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="details">
+                             <strong>OPERATING HOURS</strong><br/>
+                            Mon-Fri : 10am - 5pm<br/>
+                            Sat : 10am - 5pm<br/>
+                            Sunday, Public holidays : Closed<br/>
+                        </div>
+                    </div>
+                    <div class="desc">
+                        <div class="details">
+<a class="twitter-timeline" href="https://twitter.com/ZA_Okota" data-widget-id="523092490165829632" data-chrome="noborders nofooter" width="500">Tweets by @ZA_Okota</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
+        </section>
+    </section>
+{% endblock %}

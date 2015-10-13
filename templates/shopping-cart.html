@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+            <div class="row">
+                <div class="showback">
+                    <p>Step 2 of 3. Update items in your shopping cart. When done, click <strong>CHECKOUT</strong> to proceed.</p>
+                </div>
+                <div class="col-lg-9 main-chart">
+
+                    <div class="alert alert-dismissable alert-success {% if not message %}hidden {% endif %}">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                      {{ product.name }} {{ message }}
+                    </div>
+
+
+                    {% if cart_count != 0  %}
+
+                        {% for item in shoppingcart.products.all%}
+                            <div class="row form-panel" >
+                              <div class="col-sm-2">
+                                  <img style="max-width: 100%" src="/media/{{ item.product.picture }}">
+                              </div>
+                              <div class="col-sm-4" style="text-align: center">
+                                  <strong>{{ item.product.name }}</strong>
+                                  <br/>
+                                  <span>{{ item.product.short_description }}</span>
+                              </div>
+                              <div class="col-sm-4" style="text-align: center">
+                                  <div class="row" style=" text-align: center">
+                                      <h4 style="margin-top: 0; text-align: center">R {{ item.cost }} <br/>
+                                      </h4>
+                                      <p>
+                                          <small>{{ item.quantity }} @
+                                            R{{ item.product.price }} each
+                                          </small>
+                                      </p>
+                                  </div>
+                                  <div class="row" >
+                                  <h5>Choose quantity</h5>
+                                      <a class="btn btn-warning btn-sm {% if item.quantity == 1 %} disabled {% endif %}" href="/add_product_to_cart/{{ item.product.id }}/1/">1</a>
+                                      <a class="btn btn-warning btn-sm {% if item.quantity == 2 %} disabled {% endif %}" href="/add_product_to_cart/{{ item.product.id }}/2/">2</a>
+                                      <a class="btn btn-warning btn-sm {% if item.quantity == 3 %} disabled {% endif %}" href="/add_product_to_cart/{{ item.product.id }}/3/">3</a>
+                                      <a class="btn btn-warning btn-sm {% if item.quantity == 4 %} disabled {% endif %}" href="/add_product_to_cart/{{ item.product.id }}/4/">4</a>
+                                  </div>
+                                  </div>
+                              <div class="col-sm-2">
+                                  <a class="btn btn-link btn-sm pull-right" href="/remove_product_from_cart/{{ item.product.id }}/">Remove from cart</a>
+                              </div>
+                            </div>
+                        {% endfor %}
+                            <a href="/check-out/" class="btn btn-primary pull-right" style="margin-top: 10px"> Checkout</a>
+                    {% else %}
+                        <div class="alert alert-dismissable alert-warning ">
+                          You have not added items to your shopping cart.<a href="/"> Find items</a> to add to cart
+                        </div>
+                    {% endif %}
+
+
+               </div>
+            </div>
+        </section>
+    </section>
+
+{%  endblock %}
+
+
+
+

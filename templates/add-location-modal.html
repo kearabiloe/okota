@@ -1,0 +1,59 @@
+<div id="locationModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Add location</h4>
+            </div>
+            <div class="modal-body">
+
+                    <div class="row">
+                    <form id="add-location-form"  name="add-location-form" class="form-panel form-horizontal" role="form"  method="post" action="/add-location/">
+                        <h4><i class="fa fa-angle-right"></i> Fill in your new location's information.</h4>
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <div class="col-sm-8 col-sm-offset-2">
+                            <input type="text" class="form-control input-sm" name="address_street" id="address_street" placeholder="Street address" autocomplete="on">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-8 col-sm-offset-2">
+                            <input type="text" class="form-control input-sm" name="address_suburb" id="address_suburb" placeholder="Suburb" autocomplete="on"/>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-8 col-sm-offset-2">
+                            <input type="text"  class="form-control input-sm" name="address_city" id="address_city" placeholder="city" autocomplete="on"/>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-8 col-sm-offset-2">
+                            <select class="form-control input-sm" name="address_province" id="address_province" placeholder="Province" autocomplete="on">
+                                <option selected="selected" >Limpopo</option>
+                                <option>Mpumalanga</option>
+                                <option>Gauteng</option>
+                                <option>North West</option>
+                                <option>Free State</option>
+                                <option>Eastern Cape</option>
+                                <option>Western Cape</option>
+                                <option>Northern Cape</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-8 col-sm-offset-2">
+                            <input type="number" class="form-control input-sm" name="address_postal" id="address_postal" placeholder="Postal code" value="0742" autocomplete="on" >
+                          </div>
+                        </div>
+                        <input type="hidden" name="next" value="{{ next }}" />
+
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit"  class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

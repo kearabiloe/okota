@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-lg-9 main-chart">
+                    <div class="alert alert-dismissable alert-success {% if not message %}hidden {% endif %}">
+                      <button type="button" class="close" data-dismiss="alert">×</button>
+                      {{ product.name }} {{ message }}
+                    </div>
+                    <div  class="col-sm-12" style="text-align: center; margin-bottom: 60px;margin-top: 10%">
+                        <h1 style="word-break: keep-all"><i class="fa fa-check text-success"></i> Success</h1>
+                        <br/>
+                        <h3 class="text-muted">A confirmation sms has been sent to you.</h3>
+                        <strong> Call/WhatsApp us on <a type="tel" href="whatsapp:0630826867">0630826867</a> or E-mail <a href="mailto:support@okota.co.za?subject=Ref:Order#{{ order.id }}">support@okota.co.za</a></strong>
+                        <br/><br/><br/>
+                        <h4><a href="{{ next }}">Go back</a></h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}

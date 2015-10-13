@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+            <div class="row">
+                <div class="col-md-12 main-chart">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            {% if not slug == 'none' %}
+                                <div itemscope itemtype="http://schema.org/Article">
+                                <h3 itemprop="headline" >{{ article.title }}</h3>
+                                <div>
+                                <small itemprop="datePublished" >{{ article.date }}.</small>
+                        <div class="social-conatainer" style="margin: 15px 0px 0px 0px;">
+                           <a class="fb-like" data-href="http://www.okota.co.za/blog/{{ article.slug }}/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></a>
+                        </div>
+                                <br/><br/>
+                                    <div class="thumbnail pull-right">
+                                        <img itemprop="image"  style="max-width: 400px" src="/media/{{ article.picture }}"/>
+                                    </div>
+                                <p itemprop="articleBody" >{{ article.body|safe }}</p>
+                                </div>
+                                <br/><br/>
+                                <div id="disqus_thread"></div>
+                                <script type="text/javascript">
+                                /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                                var disqus_shortname = 'okota';
+                                var disqus_identifier = '{{ article.slug }}';
+                                var disqus_title = '{{ article.title }}';
+                                var disqus_url = 'http://www.okota.co.za/news/{{ article.slug  }}';
+
+                                /* * * DON'T EDIT BELOW THIS LINE * * */
+                                (function() {
+                                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                                })();
+                                </script>
+                                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments</a></noscript>
+                            </div>
+                            {% else %}
+
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-3 ds">
+                            <h3>Latest Posts</h3>
+                            {% for article in articles %}
+                                <div class="desc">
+                                    <div class="details">
+                                        <p><a style="color: #000000 !important;" href="/blog/{{ article.slug }}/">{{ article.title }}</a><br>
+                                           <muted>{{ article.date }}</muted>
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}

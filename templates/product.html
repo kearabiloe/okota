@@ -1,0 +1,49 @@
+
+{% for product in results %}
+<div class="alert alert-dismissable alert-success hidden">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  {{ product.name }} successfully added to your shopping cart</a>.
+</div>
+
+
+<div class="row form-panel">
+<div itemscope itemtype="http://schema.org/Product"  class="col-xs-5">
+    <img itemprop="image" style="max-width: 100%;width: 100%;border-right: 1px solid #eeeeee" src="/media/{{ product.picture }}"/>
+</div>
+<div class="col-xs-6" style="text-align: center">
+    <h4 style="margin-bottom: 0;text-decoration: underline" itemprop="name" >{{ product.name }}</h4>
+    <p >{{ product.short_description }}</p>
+
+    <div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+        <meta itemprop="priceCurrency" content="ZAR">
+        <h3 itemprop="price">R {{ product.price }}</h3>
+    </div>
+    <link itemprop="availability" href="http://schema.org/InStock">
+    {% if product.is_active and product.store.is_active%}
+    <a class="btn btn-primary" href="/add_product_to_cart/{{ product.id }}/1/">Add to cart</a>
+    {% else %}
+    <a class="btn btn-primary disabled" href="/add_product_to_cart/{{ product.id }}/1/">Unavailable</a>
+    {% endif %}
+</div>
+<br/>
+    <div class="col-xs-9 col-xs-offset-3" >
+        <div class="pr2-social centered">
+            <a class="popup" href="http://twitter.com/share?url=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/&via=za_okota&related=bunnyChow%2CKota&hashtags=BunnyChow%2CDelivery&text=Place%20Your%20Order">
+                <i class="fa fa-twitter"></i></a>
+            <a class="popup" href="https://www.facebook.com/sharer/sharer.php?u=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                <i class="fa fa-facebook"></i>
+            </a>
+            <a class="popup" href="https://plus.google.com/share?url=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                <i class="fa fa-google-plus"></i>
+            </a>
+            <a href="mailto:?Subject=Bunny%20Chow%20Delivery&amp;body=http://www.okota.co.za/{% if product.store.slug %}store/{{ product.store.slug }}{% else %}bunny-chow{% endif %}/{{ product.slug }}/">
+                <i class="fa fa-envelope"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
+{%  endfor %}

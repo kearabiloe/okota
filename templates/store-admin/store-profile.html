@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% include 'navi-bars/top-navbar.html' %}
+    <section >
+        <section class="wrapper">
+            <div class="row">
+
+                {% include 'navi-bars/store-admin-navi.html' %}
+
+                <div class="row" style="margin-left: 0px; margin-right: 0px;padding: 10px 0 10px 0">
+                    <br/>
+                    <div class="col-md-6 "  style="border-right: 1px solid #eeeeee">
+                        <form class="form-horizontal" action="/edit-store-profile/" method="POST">
+                                    {% csrf_token %}
+                                <div class="col-md-12">
+                                        <div class="form-group">
+                                          <label for="inputName" class="col-md-4 control-label">Store Name</label>
+                                          <div class="col-md-8">
+                                            <input type="text" class="form-control" id="inputName" placeholder="Product name" data-cip-id="inputName" autocomplete="off" value="{{ store.name}}"  disabled>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="Price" class="col-md-4 control-label">Cell number</label>
+                                          <div class="col-md-8">
+                                            <input class="form-control" type="number" min="0" step="0.01" id="Price" name="Price" value="{{ store.cell }}"  ></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="ShortDescription" class="col-md-4 control-label">Street address</label>
+                                          <div class="col-md-8">
+                                            <input class="form-control" type="text" id="ShortDescription" name="ShortDescription" value="{{ store.street_address }}"  disabled></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="ShortDescription" class="col-md-4 control-label">Suburb</label>
+                                          <div class="col-md-8">
+                                            <input class="form-control" type="text" id="ShortDescription" name="ShortDescription" value="{{ store.suburb }}"  disabled></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="ShortDescription" class="col-md-4 control-label">City</label>
+                                          <div class="col-md-8">
+                                            <input class="form-control" type="text" id="ShortDescription" name="ShortDescription" value="{{ store.city }}"  disabled></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="ShortDescription" class="col-md-4 control-label">Province</label>
+                                          <div class="col-md-8">
+                                            <input class="form-control" type="text" id="ShortDescription" name="ShortDescription" value="{{ store.province }}"  disabled></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="ShortDescription" class="col-md-4 control-label">Delivery fee</label>
+                                          <div class="col-md-8">
+                                            <input class="form-control" type="text" id="ShortDescription" name="ShortDescription" value="{{ store.delivery_fee }}"  disabled></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="form-group">
+
+                                          <div class="col-md-8 col-md-offset-4">
+                                            <button type="submit" class="btn btn-primary btn-sm " >Update profile</button>
+                                          </div>
+                                        </div>
+                                </div>
+                             </form>
+                    </div>
+                    <div class="col-md-6">
+                    <h3 class="text-center">Store Delivery information</h3>
+                        <table class="table table-striped table-condensed">
+                            <thead>
+                                <th>Area</th>
+                                <th>Delivery Fee</th>
+                            </thead>
+                            <tbody class="warning">
+                            {% for locality in store.delivery_locality.all %}
+                                <tr>
+                                    <td> {{locality}}</td>
+                                    <td> R {{ locality.fee }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </section>
+{% endblock %}

@@ -1,0 +1,15 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/static/images/favicon.ico">
+<title>Okota.co.za | {{ product.name }}</title>
+<meta name="description" content="{{ product.short_description }}"/>
+<meta name="keywords" content="{{ product.keywords }}"/>
+<meta property="og:url" content="http://www.okota.co.za/bunny-chow/{{ product.slug }}"/>
+<meta property="og:title" content="Order {{ product.name }} by {{ product.store.name }} for R {{product.price  }} at okota.co.za"/>
+<meta itemprop="name" content="{{ product.name }}"/>
+<meta property="og:type" content="product"/>
+<meta property="og:image" content="http://www.okota.co.za/media/{{ product.picture }}?t=12345?"/>
+<meta itemprop="image" content="http://www.okota.co.za/media/{{ product.picture }}"/>
+<meta property="og:description" content="{{ product.short_description }}. Order now at okota.co.za. Delivery for {{ product.name }} is only available around {{ product.store.suburb }}, {{ product.store.province }}"/>
+<meta itemprop="description" content="{{ product.short_description }}. Order now at okota.co.za. Delivery for {{ product.name }} is only available around {{ product.store.suburb }}, {{ product.store.province }}"/>
