@@ -42,8 +42,8 @@ Restore the 'sample.dump' file using pg_restore
 
 #### Initialize the database
 
-`./manage.py makemigrations okota`
-`./manage.py migrate okota `
+'./manage.py makemigrations okota'
+'./manage.py migrate okota '
 
 ### Ready? Go!
 
