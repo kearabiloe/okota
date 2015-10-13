@@ -15,16 +15,17 @@ psycopg2==2.5.3
 The default installation directory for okota is /var/www/okota.co.za/. It is advisable that you replicate the same configurations on your machine, otherwise make the neccessary changes in settings.py and wsgi.py.
 
 ### 1. Directory
-'$ cd /var/www/'
-
-'$ mkdir okota.co.za && cd okota.co.za'
+```
+$ cd /var/www/
+$ mkdir okota.co.za && cd okota.co.za
+```
 
 ### 2. virtualenv / virtualenvwrapper
 
 `$ mkvirtualenv --clear env`
 
 ### 3. Download
-Now, you need the *django-sample-app* project files in your workspace:
+Now, you need the *okota* project files in your workspace:
 
     $ git clone git@github.com:kearabiloe/okota.git okota && cd okota
 
