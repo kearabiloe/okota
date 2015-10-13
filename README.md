@@ -16,6 +16,7 @@ The default installation directory for okota is /var/www/okota.co.za/. It is adv
 
 ### 1. Directory
 '$ cd /var/www/'
+
 '$ mkdir okota.co.za && cd okota.co.za'
 
 ### 2. virtualenv / virtualenvwrapper
@@ -42,8 +43,9 @@ Restore the 'sample.dump' file using pg_restore
 
 #### Initialize the database
 
-'./manage.py makemigrations okota'
-'./manage.py migrate okota '
+`./manage.py makemigrations okota`
+
+`./manage.py migrate okota `
 
 ### Ready? Go!
 
