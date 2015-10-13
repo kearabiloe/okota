@@ -1,3 +1,6 @@
+Babel==2.1.1
+Brlapi==0.6.1
+Cython==0.23.1
 Django==1.7
 Pillow==2.3.0
 virtualenv==1.11.4
