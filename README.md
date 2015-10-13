@@ -25,7 +25,7 @@ The default installation directory for okota is /var/www/okota.co.za/. It is adv
 ### 3. Download
 Now, you need the *django-sample-app* project files in your workspace:
 
-    $ git clone ggit@github.com:kearabiloe/okota.git okota && cd okota
+    $ git clone git@github.com:kearabiloe/okota.git okota && cd okota
 
 ### 4. Requirements
 Install the *requirements.txt* file:
